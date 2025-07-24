@@ -6,7 +6,7 @@ import requests
 import time
 
 titulo = st.title("EMBI+ Filtrado para Brasil")
-subtitulo = st.subheader('Fonte: ')
+subtitulo = st.subheader('Fonte: J.P. Morgan')
 
 # URL do arquivo original
 url = 'https://bcrdgdcprod.blob.core.windows.net/documents/entorno-internacional/documents/Serie_Historica_Spread_del_EMBI.xlsx'
