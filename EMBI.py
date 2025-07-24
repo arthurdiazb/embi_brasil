@@ -4,7 +4,8 @@ import pandas as pd
 import requests
 import time
 
-st.title("EMBI+ Filtrado para Brasil")
+titulo = st.title("EMBI+ Filtrado para Brasil")
+subtitulo = st.subheader('Fonte: ')
 
 # URL do arquivo original
 url = 'https://bcrdgdcprod.blob.core.windows.net/documents/entorno-internacional/documents/Serie_Historica_Spread_del_EMBI.xlsx'
@@ -31,7 +32,8 @@ if st.button("Gerar arquivo Excel"):
 
     # Ler e processar
     df = pd.read_excel(BytesIO(response.content), skiprows=1, index_col=0)[['Brasil']]
-    df.index = pd.to_datetime(df.index, format="mixed").sort_values(ascending=False)
+    df.index = pd.to_datetime(df.index, format="mixed")
+    df = df.sort_index(ascending=False)
     df['Ano'] = df.index.year
     df.index.name = 'Data'
     df = df[df['Ano'].isin(anos)][['Brasil']]
@@ -48,6 +50,8 @@ if st.button("Gerar arquivo Excel"):
         worksheet = writer.sheets["EMBI+"]
         for cell in worksheet["A"][1:]:
             cell.number_format = "DD/MM/YYYY"
+        for cell in worksheet["B"][1:]:
+            cell.number_format = "#,##0.00"
         worksheet.column_dimensions["A"].width = 11
 
     output.seek(0)
