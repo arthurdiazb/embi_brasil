@@ -1,6 +1,7 @@
 from io import BytesIO
 import streamlit as st
 import pandas as pd
+import openpyxl
 import requests
 import time
 
@@ -52,7 +53,15 @@ if st.button("Gerar arquivo Excel"):
             cell.number_format = "DD/MM/YYYY"
         for cell in worksheet["B"][1:]:
             cell.number_format = "#,##0.00"
-        worksheet.column_dimensions["A"].width = 11
+        for row in worksheet.iter_rows(min_row=2):
+            for cell in row:
+                cell.font = openpyxl.styles.Font(bold=False)
+                cell.border = openpyxl.styles.Border()
+        worksheet.sheet_view.showGridLines = False
+        worksheet.insert_cols(1)
+        worksheet.insert_rows(1)
+        worksheet.column_dimensions["A"].width = 4
+        worksheet.column_dimensions["B"].width = 12
 
     output.seek(0)
     progress_bar.progress(100)
